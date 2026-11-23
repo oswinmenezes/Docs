@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Computer Setup Guide</title>
+<style>
+:root{--bg:#faf9f5;--fg:#141413;--muted:#6b6a64;--card:#f0eee6;--line:#e5e2d6;--accent:#c15f3c;--accent-fg:#fff;--code-bg:#f0eee6;--code-fg:#141413;--ok:#18794e}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1f1e1d;--fg:#f5f4ef;--muted:#a9a79e;--card:#2a2926;--line:#3a3835;--accent:#e0805f;--accent-fg:#1f1e1d;--code-bg:#171615;--code-fg:#f0eee6;--ok:#4cc38a}}
+:root[data-theme="dark"]{--bg:#1f1e1d;--fg:#f5f4ef;--muted:#a9a79e;--card:#2a2926;--line:#3a3835;--accent:#e0805f;--accent-fg:#1f1e1d;--code-bg:#171615;--code-fg:#f0eee6;--ok:#4cc38a}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:760px;margin:0 auto;padding:32px 20px 64px}
+h1,.step h2,h2.fix{font-family:Georgia,"Times New Roman",serif;font-weight:500}
+h1{font-size:2.2rem;line-height:1.2;margin:0 0 8px}
+.lead{color:var(--muted);margin:0 0 24px}
+.os{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.picker{display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;margin-bottom:28px}
+.termrow{display:flex;align-items:center;gap:8px}
+.termrow[hidden]{display:none}
+.termrow label{font-weight:600;color:var(--muted);font-size:.9rem}
+.termrow select{font:inherit;font-weight:600;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--fg);cursor:pointer}
+.os button{font:inherit;font-weight:600;padding:10px 22px;border:0;background:var(--card);color:var(--fg);cursor:pointer}
+.os button[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg)}
+.step{border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px;background:var(--bg);box-shadow:0 1px 2px rgba(60,40,20,.06)}
+.top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.theme{flex:none;width:40px;height:40px;display:grid;place-items:center;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--fg);cursor:pointer}
+.theme:hover{border-color:var(--accent);color:var(--accent)}
+.prog{height:6px;background:var(--line);border-radius:6px;margin:-12px 0 24px;overflow:hidden}
+#bar{display:block;height:100%;width:0;background:var(--accent);transition:width .3s}
+.step.done{opacity:.55}
+.head{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.num{flex:none;width:32px;height:32px;border-radius:50%;background:var(--accent);color:var(--accent-fg);display:grid;place-items:center;font-weight:700}
+.step h2{font-size:1.2rem;margin:0;flex:1}
+.tick{font:inherit;font-size:.85rem;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:8px;padding:4px 10px;cursor:pointer}
+.tick{transition:background .15s,color .15s,border-color .15s,transform .1s}
+.tick:hover{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.tick:active{transform:scale(.96)}
+.tick:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.done .tick{color:var(--ok);border-color:var(--ok)}
+.done .tick:hover{background:var(--ok);color:var(--accent-fg);border-color:var(--ok)}
+.step p{margin:8px 0}
+.step h3{font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:16px 0 4px}
+.code{position:relative;margin:10px 0}
+.code pre{margin:0;padding:14px 52px 14px 14px;background:var(--code-bg);color:var(--code-fg);border:1px solid var(--line);border-radius:10px;overflow-x:auto;font:14px/1.55 ui-monospace,SFMono-Regular,Consolas,Menlo,monospace}
+.copy{position:absolute;top:8px;right:8px;width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--muted);cursor:pointer}
+.copy:hover{color:var(--accent);border-color:var(--accent)}
+.copy.ok{color:var(--ok);border-color:var(--ok)}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.links a{padding:7px 14px;border:1px solid var(--accent);border-radius:8px;color:var(--accent);text-decoration:none;font-weight:600;font-size:.92rem}
+.links a:hover{background:var(--accent);color:var(--accent-fg)}
+details{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0;background:var(--card)}
+summary{cursor:pointer;font-weight:600}
+h2.fix{margin:40px 0 12px;font-size:1.3rem}
+</style>
+</head>
+<body>
+<main>
+<div class="top"><h1>Computer Setup Guide</h1><button class="theme" id="theme" type="button" aria-label="Switch theme"></button></div>
+<p class="lead">Install the tools you need for coding with AI, one step at a time. Pick your computer, then follow the steps. Every command has a Copy button.</p>
+<div class="picker">
+<div class="os" id="os" role="group" aria-label="Choose your computer">
+  <button data-os="w">Windows</button><button data-os="m">Mac</button><button data-os="l">Linux</button>
+</div>
+<div class="termrow" id="termrow"><label for="term">Terminal</label><select id="term"><option value="c">Command Prompt (CMD)</option><option value="p">PowerShell</option></select></div>
+</div>
+<div class="prog"><span id="bar"></span></div>
+<div id="steps"></div>
+<h2 class="fix">Something went wrong?</h2>
+<div id="fixes"></div>
+</main>
+<script>
+const P=(p,o,t)=>({p,o,t}), C=(c,o,t)=>({c,o,t}), H=(h,o,t)=>({h,o,t}), L=(ls,o,t)=>({ls,o,t});
+const S=[
+{t:"Open a terminal",i:[
+ P("A terminal is a window where you paste commands. You will use it in most steps."),
+ P("Click the Start button, type cmd, and press Enter. A black window opens. To paste, right-click inside it.","w","c"),
+ P("Click the Start button, type PowerShell, and press Enter. A blue window opens. To paste, right-click inside it.","w","p"),
+ P("Open the same kind of terminal you picked in the Terminal menu at the top of this page. The commands change to match it.","w"),
+ P("Press Command + Space, type Terminal, and press Return. To paste, press Command + V.","m"),
+ P("Press Ctrl + Alt + T. To paste, press Ctrl + Shift + V.","l"),
+ P("To run a command: click Copy, click inside the terminal, paste, and press Enter.")]},
+{t:"Allow scripts to run",i:[
+ P("Windows blocks some tools from running by default. This one-time change is safe and only affects your own account. You only need this in PowerShell, not in Command Prompt.","w","p"),
+ C("Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser","w","p"),
+ P("Type Y and press Enter when it asks. Then close PowerShell and open it again.","w","p")]},
+{t:"Install the basic tools",i:[
+ P("Node.js runs many developer tools. Git saves versions of your work. VS Code is where you write code. Chrome is your browser."),
+ P("Paste this whole block. Click Yes if Windows asks for permission. When it finishes, close the terminal and open it again.","w"),
+ C("winget install OpenJS.NodeJS.LTS --accept-package-agreements --accept-source-agreements\nwinget install Git.Git --accept-package-agreements --accept-source-agreements\nwinget install Microsoft.VisualStudioCode --accept-package-agreements --accept-source-agreements\nwinget install Google.Chrome --accept-package-agreements --accept-source-agreements","w"),
+ P("Prefer to click and install? Download from these pages instead:","w"),
+ L([["https://nodejs.org/en/download","Node.js"],["https://git-scm.com/downloads","Git"],["https://code.visualstudio.com/download","VS Code"],["https://www.google.com/chrome","Chrome"]],"w"),
+ P("Download each one and open it like any other app. For Node.js, choose the LTS version and open the .pkg file. For VS Code, unzip it and drag it into Applications.","m"),
+ L([["https://nodejs.org/en/download","Node.js"],["https://code.visualstudio.com/download","VS Code"],["https://www.google.com/chrome","Chrome"]],"m"),
+ P("For Git, paste this in Terminal. If a window offers to install developer tools, click Install.","m"),
+ C("git --version","m"),
+ P("These commands are for Ubuntu and Debian. For other kinds of Linux, use the download pages below.","l"),
+ C("sudo apt update\nsudo apt install -y git curl\nsudo snap install --classic code\ncurl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash","l"),
+ P("Close the terminal, open a new one, and install Node.js:","l"),
+ C("nvm install 24","l"),
+ L([["https://www.google.com/chrome","Chrome"],["https://nodejs.org/en/download","Node.js"],["https://code.visualstudio.com/download","VS Code"]],"l")]},
+{t:"Check that it worked",i:[
+ P("Open a new terminal window and paste this. Each line should show a version number."),
+ C("node -v\nnpm -v\ngit --version")]},
+{t:"Tell Git who you are",i:[
+ P("Git adds your name and email to your work. Change the example text to your own details. Use the email from your GitHub account."),
+ C("git config --global user.name \"Your Name\"\ngit config --global user.email \"you@example.com\"\ngit config --global init.defaultBranch main"),
+ C("git config --global core.autocrlf true","w"),
+ C("git config --global core.autocrlf input","m"),
+ C("git config --global core.autocrlf input","l")]},
+{t:"Install OpenCode",i:[
+ P("OpenCode is an AI helper that works inside your coding projects."),
+ C("npm install -g @opencode/cli"),
+ P("npm may warn that a “postinstall script” is not allowed yet. If it does, run this one instead. It lets that one package finish installing:"),
+ C("npm install -g --allow-scripts=@opencode/cli @opencode/cli"),
+ P("Check that it worked:"),
+ C("opencode --version"),
+ P("Prefer a normal app? Download it here:"),
+ L([["https://opencode.ai/download","OpenCode download"]])]},
+{t:"Install OmniRoute",i:[
+ P("OmniRoute runs on your computer. It lets your AI tools use many AI services through one address and one key."),
+ C("npm install -g omniroute"),
+ P("Check that it installed:"),
+ C("omniroute --version"),
+ P("Now start it:"),
+ C("omniroute"),
+ P("Leave that window open. Then open this page in Chrome:"),
+ L([["http://localhost:20128","OmniRoute dashboard"]]),
+ P("Open Providers and connect an AI service. Then open Endpoints and copy your OmniRoute key. You will paste it into the OpenCode settings file in the next step.")]},
+{t:"Connect OpenCode to OmniRoute",i:[
+ P("This creates the OpenCode settings file with your OmniRoute key inside it, so you do not need to set anything else. Replace your-omniroute-key with the key you copied, and keep the quote marks. It needs OpenCode version 2, which you can check with opencode --version."),
+ P("If you already have an opencode.json file, do not run this. It would replace your file. Add only the plugins part to it instead.","w","p"),
+ C(String.raw`New-Item -ItemType Directory -Force "$HOME\.config\opencode" | Out-Null
+@'
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugins": [
+    {
+      "package": "@omniroute/opencode-plugin-v2",
+      "options": {
+        "providerId": "omniroute",
+        "baseURL": "http://127.0.0.1:20128",
+        "apiKey": "your-omniroute-key"
+      }
+    }
+  ]
+}
+'@ | Set-Content "$HOME\.config\opencode\opencode.json"`,"w","p"),
+ P("This opens the settings file in Notepad. If it says the folder already exists, that is fine. If Notepad asks to create a new file, click Yes.","w","c"),
+ C(String.raw`mkdir "%USERPROFILE%\.config\opencode"
+notepad "%USERPROFILE%\.config\opencode\opencode.json"`,"w","c"),
+ P("Paste this into Notepad and press Ctrl + S to save. If the file already had text in it, add only the plugins part instead.","w","c"),
+ C(`{
+  "$schema": "https://opencode.ai/config.json",
+  "plugins": [
+    {
+      "package": "@omniroute/opencode-plugin-v2",
+      "options": {
+        "providerId": "omniroute",
+        "baseURL": "http://127.0.0.1:20128",
+        "apiKey": "your-omniroute-key"
+      }
+    }
+  ]
+}`,"w","c"),
+ P("If you already have an opencode.json file, do not run this. It would replace your file. Add only the plugins part to it instead.","m"),
+ C(`mkdir -p ~/.config/opencode
+cat > ~/.config/opencode/opencode.json <<'EOF'
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugins": [
+    {
+      "package": "@omniroute/opencode-plugin-v2",
+      "options": {
+        "providerId": "omniroute",
+        "baseURL": "http://127.0.0.1:20128",
+        "apiKey": "your-omniroute-key"
+      }
+    }
+  ]
+}
+EOF`,"m"),
+ P("If you already have an opencode.json file, do not run this. It would replace your file. Add only the plugins part to it instead.","l"),
+ C(`mkdir -p ~/.config/opencode
+cat > ~/.config/opencode/opencode.json <<'EOF'
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugins": [
+    {
+      "package": "@omniroute/opencode-plugin-v2",
+      "options": {
+        "providerId": "omniroute",
+        "baseURL": "http://127.0.0.1:20128",
+        "apiKey": "your-omniroute-key"
+      }
+    }
+  ]
+}
+EOF`,"l"),
+ P("To see where OpenCode keeps its settings, run this:"),
+ C("opencode debug paths"),
+ P("To open the settings file in Notepad:","w"),
+ C("notepad \"$HOME\\.config\\opencode\\opencode.json\"","w","p"),
+ C(String.raw`notepad "%USERPROFILE%\.config\opencode\opencode.json"`,"w","c")]},
+{t:"Check that OpenCode sees OmniRoute",i:[
+ P("Make sure OmniRoute is still running in its own window. Then open a new terminal and run:"),
+ C("opencode models"),
+ P("You should see a list of models that start with omniroute/. If the list is empty, check that the key in the settings file is correct and that OmniRoute is still open.")]},
+{t:"Keep your keys safe",i:[
+ P("Your key is stored in the OpenCode settings file on your own computer. Never upload that file to GitHub, even a private one."),
+ P("If a key is ever exposed, delete it on the provider’s website and make a new one."),
+ P("Do not paste keys into chats, screenshots, or emails.")]}
+];
+const F=[
+{q:"npm says a postinstall script was not allowed",i:[P("Run the second OpenCode install command in the “Install OpenCode” step. It has --allow-scripts in it.")]},
+{q:"The terminal says the command is “not found” or “not recognized”",i:[P("Close the terminal and open a new one. If it still fails, restart your computer.")]},
+{q:"PowerShell says “running scripts is disabled”",i:[P("Do the step called “Allow scripts to run”, then open a new PowerShell window.","w","p")]},
+{q:"npm says “permission denied” on Mac or Linux",i:[P("Do not use sudo. Run this once, then try the install again:","m"),C("mkdir -p ~/.npm-global\nnpm config set prefix ~/.npm-global\necho 'export PATH=\"$HOME/.npm-global/bin:$PATH\"' >> ~/.zshrc\nsource ~/.zshrc","m"),P("Do not use sudo. Run this once, then try the install again:","l"),C("mkdir -p ~/.npm-global\nnpm config set prefix ~/.npm-global\necho 'export PATH=\"$HOME/.npm-global/bin:$PATH\"' >> ~/.bashrc\nsource ~/.bashrc","l")]},
+{q:"OmniRoute will not start",i:[P("Check your Node.js version with the command below. OmniRoute needs version 20.20.2 or newer, 22.22.2 or newer, or any 24.x.",undefined),C("node -v"),P("If the page will not open, make sure the OmniRoute window is still open.")]},
+{q:"Git says “Please tell me who you are”",i:[P("Do the step called “Tell Git who you are”.")]}
+];
+const $=s=>document.querySelector(s);
+let os=/Win/i.test(navigator.userAgent)?"w":/Mac/i.test(navigator.userAgent)?"m":"l";
+let term="c";
+const vis=x=>(!x.o||x.o===os)&&(os!=="w"||!x.t||x.t===term);
+const done=new Set();
+const SV='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">';
+const COPY=SV+'<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+const CHECK=SV+'<polyline points="20 6 9 17 4 12"/></svg>';
+const MOON=SV+'<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
+const SUN=SV+'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
+function fallbackCopy(t){const a=document.createElement("textarea");a.value=t;a.style.position="fixed";a.style.opacity="0";document.body.appendChild(a);a.select();try{document.execCommand("copy")}catch(e){}a.remove()}
+async function copy(t,b){
+  try{await navigator.clipboard.writeText(t)}catch(e){fallbackCopy(t)}
+  b.innerHTML=CHECK;b.title="Copied";b.classList.add("ok");
+  setTimeout(()=>{b.innerHTML=COPY;b.title="Copy";b.classList.remove("ok")},1600);
+}
+function el(tag,cls,text){const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
+function items(list,box){
+  list.filter(vis).forEach(x=>{
+    if(x.p!=null)box.append(el("p",0,x.p));
+    else if(x.h!=null)box.append(el("h3",0,x.h));
+    else if(x.c!=null){
+      const w=el("div","code"),pre=el("pre"),code=el("code",0,x.c),b=el("button","copy");b.innerHTML=COPY;b.title="Copy";b.setAttribute("aria-label","Copy command");
+      pre.append(code);b.type="button";b.onclick=()=>copy(x.c,b);w.append(pre,b);box.append(w);
+    }else if(x.ls){
+      const w=el("div","links");
+      x.ls.forEach(([u,t])=>{const a=el("a",0,t);a.href=u;a.target="_blank";a.rel="noopener";w.append(a)});
+      box.append(w);
+    }
+  });
+}
+function render(){
+  document.querySelectorAll("#os button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.os===os));
+  const root=$("#steps");root.textContent="";
+  let n=0,dn=0;
+  S.forEach((s,idx)=>{
+    if(!s.i.some(vis))return;
+    n++;if(done.has(idx))dn++;
+    const card=el("section","step"+(done.has(idx)?" done":"")),head=el("div","head");
+    const tick=el("button","tick",done.has(idx)?"Done":"Mark done");tick.type="button";
+    tick.onclick=()=>{done.has(idx)?done.delete(idx):done.add(idx);render()};
+    head.append(el("div","num",String(n)),el("h2",0,s.t),tick);
+    card.append(head);items(s.i,card);root.append(card);
+  });
+  $("#termrow").hidden=os!=="w";$("#term").value=term;
+  $("#bar").style.width=(n?dn/n*100:0)+"%";
+  const fx=$("#fixes");fx.textContent="";
+  F.forEach(f=>{
+    if(!f.i.some(vis))return;
+    const d=el("details"),sm=el("summary",0,f.q);d.append(sm);items(f.i,d);fx.append(d);
+  });
+}
+document.querySelectorAll("#os button").forEach(b=>b.onclick=()=>{os=b.dataset.os;render()});
+function setTheme(t){document.documentElement.dataset.theme=t;const b=$("#theme");b.innerHTML=t==="dark"?SUN:MOON;b.title=t==="dark"?"Switch to light theme":"Switch to dark theme"}
+$("#theme").onclick=()=>setTheme(document.documentElement.dataset.theme==="dark"?"light":"dark");
+setTheme("light");
+$("#term").onchange=e=>{term=e.target.value;render()};
+render();
+</script>
+</body>
+</html>
